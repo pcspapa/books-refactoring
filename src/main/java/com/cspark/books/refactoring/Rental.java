@@ -12,7 +12,7 @@ package com.cspark.books.refactoring;
  * Created by cspark on 2015. 11. 26..
  */
 public class Rental {
-    private Movie _movie;
+    Movie _movie;
     private int _daysRented;
 
     public Rental(Movie movie, int daysRented) {
@@ -28,25 +28,11 @@ public class Rental {
         return _daysRented;
     }
 
-    double amountFor() {
-        double thisAmount = 0;
-        switch (getMovie().getPriceCode()) {
-            case Movie.REGULAR:
-                thisAmount += 2;
-                if (getDaysRented() > 2)
-                    thisAmount += (getDaysRented() - 2) * 1.5;
-                break;
+    double getCharge() {
+        return _movie.getCharge(_daysRented);
+    }
 
-            case Movie.NEW_RELEASE:
-                thisAmount += getDaysRented() * 3;
-                break;
-
-            case Movie.CHILDRENS:
-                thisAmount += 1.5;
-                if (getDaysRented() > 3)
-                    thisAmount += (getDaysRented() - 3) * 1.5;
-                break;
-        }
-        return thisAmount;
+    int getFrequentRenterPoints() {
+        return _movie.getFrequentRenterPoints(_daysRented);
     }
 }

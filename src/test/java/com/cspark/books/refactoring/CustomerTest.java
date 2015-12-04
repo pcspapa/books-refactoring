@@ -20,39 +20,49 @@ public class CustomerTest {
     public void basicRegularRental() throws Exception {
         customer.addRental(new Rental(REGULAR, 2));
         assertThat(customer.statements(), is(expectedMessageFor("레귤러 영화", 2.0, 2.0, 1)));
+        assertThat(customer.htmlStatements(), is(expectedHtmlMessageFor("레귤러 영화", 2.0, 2.0, 1)));
     }
 
     @Test
     public void shouldDiscountRegularRentals() throws Exception {
         customer.addRental(new Rental(REGULAR, 3));
         assertThat(customer.statements(), is(expectedMessageFor("레귤러 영화", 3.5, 3.5, 1)));
+        assertThat(customer.htmlStatements(), is(expectedHtmlMessageFor("레귤러 영화", 3.5, 3.5, 1)));
     }
 
     @Test
     public void basicNewReleaseRental() throws Exception {
         customer.addRental(new Rental(NEW_RELEASE, 1));
         assertThat(customer.statements(), is(expectedMessageFor("신작 영화", 3.0, 3.0, 1)));
+        assertThat(customer.htmlStatements(), is(expectedHtmlMessageFor("신작 영화", 3.0, 3.0, 1)));
     }
 
     @Test
     public void shouldNotDiscountNewReleaseRentalsButBonusFrequentRenterPoints() throws Exception {
         customer.addRental(new Rental(NEW_RELEASE, 3));
         assertThat(customer.statements(), is(expectedMessageFor("신작 영화", 9.0, 9.0, 2)));
+        assertThat(customer.htmlStatements(), is(expectedHtmlMessageFor("신작 영화", 9.0, 9.0, 2)));
     }
 
     @Test
     public void basicChildensRental() throws Exception {
         customer.addRental(new Rental(CHILDRENS, 3));
         assertThat(customer.statements(), is(expectedMessageFor("어린이 영화", 1.5, 1.5, 1)));
+        assertThat(customer.htmlStatements(), is(expectedHtmlMessageFor("어린이 영화", 1.5, 1.5, 1)));
     }
 
     @Test
     public void shouldDiscountChildrensRentals() throws Exception {
         customer.addRental(new Rental(CHILDRENS, 4));
         assertThat(customer.statements(), is(expectedMessageFor("어린이 영화", 3.0, 3.0, 1)));
+        assertThat(customer.htmlStatements(), is(expectedHtmlMessageFor("어린이 영화", 3.0, 3.0, 1)));
     }
 
     private static String expectedMessageFor(String rental, double price, double total, int renterPointsEarned) {
         return "chan 고객님의 대여 기록\n\t" + rental + "\t" + price + "\n누적 대여료: " + total + "\n적립 포인트: " + renterPointsEarned;
+    }
+
+    private static String expectedHtmlMessageFor(String rental, double price, double total, int renterPointsEarned) {
+        return "<P><H1><EM>chan 고객님의 대여 기록</EM></H1></P>\n" + rental + ": " + price + "<BR>\n<P>누적 대여료: <EM>" + total + "</EM></P>\n<P>적립 포인트: <EM>" + renterPointsEarned + "</EM></P>";
     }
 }
